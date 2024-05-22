@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hangman/components/action_button.dart';
 import 'package:flutter_hangman/utilities/hangman_words.dart';
 
+import 'game_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   final HangmanWords hangmanWords = HangmanWords();
 
