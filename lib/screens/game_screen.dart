@@ -1,5 +1,3 @@
-//import 'dart:math';
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -7,12 +5,12 @@ import 'package:flutter_hangman/components/word_button.dart';
 import 'package:flutter_hangman/screens/home_screen.dart';
 import 'package:flutter_hangman/utilities/alphabet.dart';
 import 'package:flutter_hangman/utilities/constants.dart';
-//import 'package:flutter_hangman/utilities/constants.dart';
+import 'package:flutter_hangman/utilities/constants.dart';
 import 'package:flutter_hangman/utilities/hangman_words.dart';
 import 'package:flutter_hangman/utilities/score_db.dart' as score_database;
-//import 'package:flutter_hangman/utilities/user_scores.dart';
+import 'package:flutter_hangman/utilities/user_scores.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-//import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key, required this.hangmanObject});
@@ -92,7 +90,26 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
-  void wordPress(int index) {} //butuh diselesaikan
+  void wordPress(int index) {
+    if (lives == 0) {
+      returnHomePage();
+    }
+
+    if (finishedGame) {
+      setState(() {
+        resetGame = true;
+      });
+      return;
+    }
+    bool check = false;
+    setState(() {
+      for (int i = 0; i < wordList.length; i++) {
+        check = true;
+        wordList[i] = '';
+        hiddenWord = hiddenWord.replaceFirst(RegExp('_'), word[i], i);
+      } //menambahkan logic game (baru 1 logic)
+    });
+  }
 
   @override
   void initState() {
@@ -327,6 +344,6 @@ class _GameScreenState extends State<GameScreen> {
           ),
         ),
       ),
-    ); // Sementara hanya untuk mengatasi error
+    );
   }
 }
