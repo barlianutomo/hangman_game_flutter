@@ -9,7 +9,7 @@ const kActionButtonTextStyle = TextStyle(
 );
 
 const kActionButtonColor = Color(0xFF1089ff);
-const kActionButtonHighlightColor = Color(0xFF109ff);
+const kActionButtonHighlightColor = Color(0xFF1089ff);
 
 const kWordButtonColor = Color(0xFF1089ff);
 const kTooltipColor = Color(0xFF1089ff);

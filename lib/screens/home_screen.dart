@@ -58,7 +58,9 @@ class HomeScreenState extends State<HomeScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => GameScreen(),
+                              builder: (context) => GameScreen(
+                                hangmanObject: widget.hangmanWords,
+                              ),
                             ),
                           );
                         },
