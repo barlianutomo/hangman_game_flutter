@@ -6,13 +6,15 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 Future<Database> openDB() async {
-  final database =
-      openDatabase(join(await getDatabasesPath(), 'scores_database.db'),
-          onCreate: (db, version) {
-    return db.execute(
-      "CREATE TABLE score(id INTEGER PRIMARY KEY AUTOINCREMENT, scoreDate TEXT, userScore INTEGER)",
-    );
-  }, version: 1);
+  final database = openDatabase(
+    join(await getDatabasesPath(), 'scores_database.db'),
+    onCreate: (db, version) {
+      return db.execute(
+        "CREATE TABLE scores(id INTEGER PRIMARY KEY AUTOINCREMENT, scoreDate TEXT, userScore INTEGER)",
+      );
+    },
+    version: 1,
+  );
   return database;
 }
 

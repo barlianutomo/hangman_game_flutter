@@ -5,7 +5,6 @@ import 'package:flutter_hangman/components/word_button.dart';
 import 'package:flutter_hangman/screens/home_screen.dart';
 import 'package:flutter_hangman/utilities/alphabet.dart';
 import 'package:flutter_hangman/utilities/constants.dart';
-import 'package:flutter_hangman/utilities/constants.dart';
 import 'package:flutter_hangman/utilities/hangman_words.dart';
 import 'package:flutter_hangman/utilities/score_db.dart' as score_database;
 import 'package:flutter_hangman/utilities/user_scores.dart';
@@ -104,10 +103,111 @@ class _GameScreenState extends State<GameScreen> {
     bool check = false;
     setState(() {
       for (int i = 0; i < wordList.length; i++) {
-        check = true;
-        wordList[i] = '';
-        hiddenWord = hiddenWord.replaceFirst(RegExp('_'), word[i], i);
-      } //menambahkan logic game (baru 1 logic)
+        if (wordList[i] == englishAlphabet.alphabet[index]) {
+          check = true;
+          wordList[i] = '';
+          hiddenWord = hiddenWord.replaceFirst(RegExp('_'), word[i], i);
+        }
+      }
+      for (int i = 0; i < wordList.length; i++) {
+        if (wordList[i] == '') {
+          hintLetters.remove(i);
+        }
+      }
+      if (!check) {
+        hangState += 1;
+      }
+
+      if (hangState == 6) {
+        finishedGame = true;
+        lives -= 1;
+        if (lives < 1) {
+          if (wordCount > 0) {
+            Score score = Score(
+                id: 1,
+                scoreDate: DateTime.now().toString(),
+                userScore: wordCount);
+            score_database.manipulateDatabase(score, database);
+          }
+          Alert(
+              style: kGameOverAlertStyle,
+              context: context,
+              title: "Game Over",
+              desc: "Your score is $wordCount",
+              buttons: [
+                DialogButton(
+                  color: kDialogButtonColor,
+                  child: Icon(
+                    MdiIcons.home,
+                    size: 30.0,
+                  ),
+                  onPressed: () => returnHomePage(),
+                ),
+                DialogButton(
+                  color: kDialogButtonColor,
+                  child: Icon(
+                    MdiIcons.refresh,
+                    size: 30.0,
+                  ),
+                  onPressed: () {
+                    newGame();
+                    Navigator.pop(context);
+                  },
+                ),
+              ]).show();
+        } else {
+          Alert(
+            context: context,
+            style: kFailedAlertStyle,
+            type: AlertType.error,
+            title: word,
+            buttons: [
+              DialogButton(
+                radius: BorderRadius.circular(10),
+                width: 127,
+                color: kDialogButtonColor,
+                child: Icon(MdiIcons.arrowRightThick),
+                onPressed: () {
+                  setState(() {
+                    Navigator.pop(context);
+                    initWords();
+                  });
+                },
+              ),
+            ],
+          ).show();
+        }
+      }
+
+      buttonStatus[index] == false;
+      if (hiddenWord == word) {
+        finishedGame == true;
+        Alert(
+          context: context,
+          style: kSuccessAlertStyle,
+          type: AlertType.success,
+          title: word,
+          buttons: [
+            DialogButton(
+              radius: BorderRadius.circular(10),
+              width: 127.0,
+              color: kDialogButtonColor,
+              height: 52.0,
+              child: Icon(
+                MdiIcons.arrowRightThick,
+                size: 30.0,
+              ),
+              onPressed: () {
+                setState(() {
+                  wordCount += 1;
+                  Navigator.pop(context);
+                  initWords();
+                });
+              },
+            ),
+          ],
+        ).show();
+      }
     });
   }
 
