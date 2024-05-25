@@ -3,6 +3,7 @@ import 'package:flutter_hangman/components/action_button.dart';
 import 'package:flutter_hangman/utilities/hangman_words.dart';
 
 import 'game_screen.dart';
+import 'loading_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final HangmanWords hangmanWords = HangmanWords();
@@ -73,7 +74,14 @@ class HomeScreenState extends State<HomeScreen> {
                       height: 64,
                       child: ActionButton(
                         buttonTitle: 'High Score',
-                        onPress: () {},
+                        onPress: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoadingScreen(),
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ],

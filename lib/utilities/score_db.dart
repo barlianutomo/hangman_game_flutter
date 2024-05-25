@@ -10,7 +10,7 @@ Future<Database> openDB() async {
     join(await getDatabasesPath(), 'scores_database.db'),
     onCreate: (db, version) {
       return db.execute(
-        "CREATE TABLE scores(id INTEGER PRIMARY KEY AUTOINCREMENT, scoreDate TEXT, userScore INTEGER)",
+        "CREATE TABLE score(id INTEGER PRIMARY KEY AUTOINCREMENT, scoreDate TEXT, userScore INTEGER)",
       );
     },
     version: 1,
@@ -22,16 +22,16 @@ Future<void> insertScore(Score score, final database) async {
   final Database db = await database;
 
   await db.insert(
-    'scores',
+    'score',
     score.toMap(),
     conflictAlgorithm: ConflictAlgorithm.ignore,
   );
 }
 
-Future<List<Score>> scores(final database) async {
+Future<List<Score>> score(final database) async {
   final Database db = await database;
 
-  final List<Map<String, dynamic>> maps = await db.query('scores');
+  final List<Map<String, dynamic>> maps = await db.query('score');
 
   return List.generate(maps.length, (i) {
     return Score(
@@ -46,7 +46,7 @@ Future<void> updateScore(Score score, final database) async {
   final db = await database;
 
   await db.update(
-    'scores',
+    'score',
     score.toMap(),
     where: "id = ?",
     whereArgs: [score.id],
@@ -57,7 +57,7 @@ Future<void> deleteScore(int id, final database) async {
   final db = await database;
 
   await db.delete(
-    'scores',
+    'score',
     where: "id = ?",
     whereArgs: [id],
   );
@@ -65,6 +65,6 @@ Future<void> deleteScore(int id, final database) async {
 
 void manipulateDatabase(Score scoreObject, final database) async {
   await insertScore(scoreObject, database);
-  List<Score> data = await scores(database);
+  List<Score> data = await score(database);
   debugPrint(data.toString());
 }
